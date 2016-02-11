@@ -1,0 +1,9 @@
+#Python Stuff
+__pycache__/
+venv/
+
+#Node Packages
+node_modules/
+
+# build targets and artifacts
+*.css
