@@ -15,13 +15,16 @@ PYTHON = python3
 endif
 
 
-.PHONY: test upgrade freeze configure clean run debug build
+.PHONY: freeze configure-dev configure upgrade clean test run debug build
 
 freeze:
 	source $(VENV_ACTIVATE); pip freeze > requirements.txt; deactivate
 
-configure:
+configure-dev: configure
 	npm install
+
+configure:
+	npm install --production
 	virtualenv -v -p 3 $(VENV_NAME)
 	source $(VENV_ACTIVATE); pip install -r requirements.txt; deactivate
 
@@ -50,3 +53,6 @@ build: whiteboard.css
 
 %.css: %.styl
 	$$(npm bin)/stylus -c -o $@ $*.styl
+
+%.min.js: %.js
+	echo
