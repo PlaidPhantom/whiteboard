@@ -13,7 +13,7 @@ PYTHON = python3
 endif
 
 
-.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug build
+.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug kill build
 
 all: build
 
