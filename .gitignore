@@ -8,3 +8,6 @@ node_modules/
 # build targets and artifacts
 *.css
 *.min.js
+
+# PID files for make run / make stop
+*.pid

@@ -49,10 +49,16 @@ test:
 	$$(npm bin)/stylint $(CSS_DIR)/
 
 run: build
-	./run.sh
+	./site.sh & && echo $$! > site.pid
+	./service.sh & && echo $$! > service.pid
 
 debug: build
-	./run.sh --debug
+	./site.sh --debug & && echo $$! > site.pid
+	./service.sh --debug & && echo $$! > service.pid
+
+stop:
+	kill $$(cat site.pid) && rm site.pid
+	kill $$(cat service.pid) && rm service.pid
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
 	@echo 'build done'
