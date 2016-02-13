@@ -13,12 +13,15 @@ PYTHON = python3
 endif
 
 
-.PHONY: freeze configure-dev configure upgrade clean test run debug build
+.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug build
 
 all: build
 
-freeze:
-	source $(VENV_ACTIVATE) && pip freeze > requirements.txt && deactivate
+pip-install:
+	source $(VENV_ACTIVATE) && pip install $(PKG) && pip freeze > requirements.txt && deactivate
+
+pip-uninstall:
+	source $(VENV_ACTIVATE) && pip uninstall $(PKG) && pip freeze > requirements.txt && deactivate
 
 configure-dev: configure
 	npm install
@@ -46,10 +49,10 @@ test:
 	$$(npm bin)/stylint $(CSS_DIR)/
 
 run: build
-	source $(VENV_ACTIVATE) && $(PYTHON) whiteboard.py && deactivate
+	./run.sh
 
 debug: build
-	source $(VENV_ACTIVATE) && $(PYTHON) whiteboard.py --debug && deactivate
+	./run.sh --debug
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
 	@echo 'build done'
