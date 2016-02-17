@@ -8,6 +8,6 @@ fi
 
 source ./venv/*/activate
 
-$PYTHON service.py $@ 
+exec $PYTHON sockets.py $@ 
 
 deactivate

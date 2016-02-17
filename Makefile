@@ -50,15 +50,18 @@ test:
 
 run: build
 	./site.sh & && echo $$! > site.pid
-	./service.sh & && echo $$! > service.pid
+	./socket.sh & && echo $$! > socket.pid
+	./proxy.sh & && echo $$! > proxy.pid
 
 debug: build
 	./site.sh --debug & && echo $$! > site.pid
-	./service.sh --debug & && echo $$! > service.pid
+	./socket.sh --debug & && echo $$! > socket.pid
+	./proxy.sh & && echo $$! > proxy.pid
 
 stop:
 	kill $$(cat site.pid) && rm site.pid
-	kill $$(cat service.pid) && rm service.pid
+	kill $$(cat socket.pid) && rm socket.pid
+	kill $$(cat proxy.pid) && rm proxy.pid
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
 	@echo 'build done'

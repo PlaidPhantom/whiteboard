@@ -27,4 +27,4 @@ def board(id):
     return {}
 
 
-run(app=GzMiddleware(default_app()), host='0.0.0.0', port=8080, server='waitress', reloader='--debug' in argv, debug='--debug' in argv)
+run(app=GzMiddleware(default_app()), host='0.0.0.0', port=8081, server='waitress', reloader='--debug' in argv, debug='--debug' in argv)

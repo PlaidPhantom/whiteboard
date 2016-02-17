@@ -8,6 +8,6 @@ fi
 
 source ./venv/*/activate
 
-$PYTHON site.py $@
+exec $PYTHON site.py $@
 
 deactivate
