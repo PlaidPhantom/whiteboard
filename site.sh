@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ $(python --version | sed -e 's/Python\s\([0-9]\).*/\1/') = 3 ]]; then
     PYTHON=python

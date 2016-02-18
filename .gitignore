@@ -1,9 +1,12 @@
-#Python Stuff
+# Python Stuff
 __pycache__/
 venv/
 
-#Node Packages
+# Node Packages
 node_modules/
+
+# Redis
+redis/
 
 # build targets and artifacts
 *.css

@@ -18,9 +18,11 @@ endif
 all: build
 
 pip-install:
+	# usage: make pip-install PKG=<package name>
 	source $(VENV_ACTIVATE) && pip install $(PKG) && pip freeze > requirements.txt && deactivate
 
 pip-uninstall:
+	# usage: make pip-uninstall PKG=<package name>
 	source $(VENV_ACTIVATE) && pip uninstall $(PKG) && pip freeze > requirements.txt && deactivate
 
 configure-dev: configure
@@ -31,6 +33,7 @@ configure:
 	npm install --production
 	virtualenv -v -p 3 $(VENV_NAME)
 	source $(VENV_ACTIVATE) && pip install -r requirements.txt && deactivate
+	./install-redis.sh
 
 upgrade:
 	npm upgrade --save-dev
@@ -49,16 +52,19 @@ test:
 	$$(npm bin)/stylint $(CSS_DIR)/
 
 run: build
+	./redis.sh & && echo $$! > redis.pid
 	./site.sh & && echo $$! > site.pid
 	./socket.sh & && echo $$! > socket.pid
 	./proxy.sh & && echo $$! > proxy.pid
 
 debug: build
+	./redis.sh --loglevel verbose & && echo $$! > redis.pid
 	./site.sh --debug & && echo $$! > site.pid
 	./socket.sh --debug & && echo $$! > socket.pid
 	./proxy.sh & && echo $$! > proxy.pid
 
 stop:
+	kill $$(cat redis.pid) && rm redis.pid
 	kill $$(cat site.pid) && rm site.pid
 	kill $$(cat socket.pid) && rm socket.pid
 	kill $$(cat proxy.pid) && rm proxy.pid
