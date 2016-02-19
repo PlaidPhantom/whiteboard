@@ -3,9 +3,13 @@ from sys import argv
 from bottle import run, get, post, error, static_file, request, response, view, default_app
 from gz_middleware import GzMiddleware
 
-@get('/css')
+@get('/css/whiteboard')
 def css():
     return static_file('whiteboard.css', 'css/')
+
+@get('/css/sensasans/<fontfile>')
+def fonts(fontfile):
+    return static_file(fontfile, "css/sensasans/")
 
 @get('/js/<script:re:[A-Za-z]+>')
 def js(script):

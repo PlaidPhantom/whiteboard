@@ -52,28 +52,28 @@ test:
 	$$(npm bin)/stylint $(CSS_DIR)/
 
 run: build
-	./redis.sh & && echo $$! > redis.pid
-	./site.sh & && echo $$! > site.pid
-	./socket.sh & && echo $$! > socket.pid
-	./proxy.sh & && echo $$! > proxy.pid
+	./redis.sh & echo $$! > redis.pid
+	./site.sh & echo $$! > site.pid
+	./web-socket.sh & echo $$! > web-socket.pid
+	./proxy.sh & echo $$! > proxy.pid
 
 debug: build
-	./redis.sh --loglevel verbose & && echo $$! > redis.pid
-	./site.sh --debug & && echo $$! > site.pid
-	./socket.sh --debug & && echo $$! > socket.pid
-	./proxy.sh & && echo $$! > proxy.pid
+	./redis.sh --loglevel verbose & echo $$! > redis.pid
+	./site.sh --debug & echo $$! > site.pid
+	./web-socket.sh --debug & echo $$! > web-socket.pid
+	./proxy.sh & echo $$! > proxy.pid
 
 stop:
 	kill $$(cat redis.pid) && rm redis.pid
 	kill $$(cat site.pid) && rm site.pid
-	kill $$(cat socket.pid) && rm socket.pid
+	kill $$(cat web-socket.pid) && rm web-socket.pid
 	kill $$(cat proxy.pid) && rm proxy.pid
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
 	@echo 'build done'
 
 %.css: %.styl
-	$$(npm bin)/stylus --include-css -c -o $@ $?
+	$$(npm bin)/stylus --resolve-url --include-css --compress --out $@ $?
 
 %.min.js: %.js
 	$$(npm bin)/uglifyjs -o $@ $?

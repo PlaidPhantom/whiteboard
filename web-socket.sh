@@ -8,6 +8,6 @@ fi
 
 source ./venv/*/activate
 
-exec $PYTHON sockets.py $@
+exec $PYTHON web-socket.py $@
 
 deactivate
