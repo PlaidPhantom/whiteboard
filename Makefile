@@ -73,7 +73,7 @@ build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
 	@echo 'build done'
 
 %.css: %.styl
-	$$(npm bin)/stylus -c -o $@ $?
+	$$(npm bin)/stylus --include-css -c -o $@ $?
 
 %.min.js: %.js
 	$$(npm bin)/uglifyjs -o $@ $?
