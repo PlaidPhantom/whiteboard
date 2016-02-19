@@ -1,5 +1,7 @@
 @import "sensasans"
 
+@primary = #020202
+@background = #fdfdfd
 
 // reset
 *
@@ -20,11 +22,11 @@ strong, b
     font-weight bold
 
 html
-    font-size 16px
+    font-size 20px
 
 body
-    background-color #eee
-    color #111
+    background-color @background
+    color @primary
 
     font-family sans-serif
     line-height 1.4em
@@ -37,16 +39,30 @@ h1, h2, h3
     padding 0 0 .75em 0
 
 h1
-    font-size 2em
+    font-size (9em / 3)
 
 h2
-    font-size (5em / 3)
+    font-size (7em / 3)
 
 h3
-    font-size (4em / 3)
+    font-size (5em / 3)
 
 p
     padding 0 0 1em 0
+
+button
+    padding .5em
+    border-radius .5em
+    border-style solid
+    border-color @primary
+    background-color @primary
+    color @background
+
+input[type="text"]
+    padding .5em
+    border-radius .5em
+    border-style solid
+    border-color @primary
 
 header
     width 100%
