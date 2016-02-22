@@ -29,6 +29,10 @@ class Board():
     def __layersKey(self):
         return __layersKeyFormat.format(self.id)
 
+    def has_passphrase(self):
+        with connect() as r:
+            return r.exists(self.__passphraseKey())
+
     def get_passphrase(self):
         with connect() as r:
             return r.get(self.__passphraseKey())

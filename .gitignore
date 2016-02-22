@@ -10,6 +10,7 @@ redis/
 
 # build targets and artifacts
 *.css
+js/*.js
 *.min.js
 
 # PID files for make run / make stop

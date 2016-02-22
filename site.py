@@ -1,7 +1,9 @@
 from sys import argv
 
-from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect
+from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect, HTTPResponse
 from gz_middleware import GzMiddleware
+
+from data_access import *
 
 @get('/css/whiteboard')
 def css():
@@ -20,18 +22,22 @@ def js(script):
 def index():
     return {}
 
-@post('/board/new')
-def newboard():
-    board_id = request.forms.newid
-    passphrase = request.forms.passphrase
-    # TODO create board
-    redirect('/board/' + board_id)
+@get('/exists')
+def exists():
+    id = request.forms.id
 
-@post('/board/join')
-def join():
-    # TODO make sure board id is valid
-    # TODO if board doesn't exist, offer to create
-    redirect("/board/" + request.forms.id)
+    if id == ''
+        abort(400)
+    elif not Board.exists(id):
+        abort(404)
+    else:
+        return HTTPResponse(200)
+
+
+@post('/board/create/<id:re:^[A-Za-z0-9_-]+$>')
+def create(id):
+    board = Board(id)
+    redirect('/board/' + id)
 
 @get('/board/<id>')
 def board():

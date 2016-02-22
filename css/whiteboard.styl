@@ -1,7 +1,8 @@
 @import "sensasans"
 
-@primary = #020202
-@background = #fdfdfd
+$primary = #020202
+$background = #fdfdfd
+$error = #440000
 
 // reset
 *
@@ -26,8 +27,8 @@ html
     font-size 20px
 
 body
-    background-color @background
-    color @primary
+    background-color $background
+    color $primary
 
     font-family sans-serif
     line-height 1.4em
@@ -51,20 +52,6 @@ h3
 p
     padding 0 0 1em 0
 
-button
-    padding .5em
-    border-radius .5em
-    border-style solid
-    border-color @primary
-    background-color @primary
-    color @background
-
-input[type="text"]
-    padding .5em
-    border-radius .5em
-    border-style solid
-    border-color @primary
-
 header
     width 100%
     text-align center
@@ -79,3 +66,37 @@ main
     form
         display block
         text-align center
+
+button
+    padding .5em
+    border-radius .5em
+    border-style solid
+    border-color $primary
+    background-color $primary
+    color $background
+
+    &:disabled
+        border-color desaturate(@border-color, 40%)
+
+input[type="text"]
+    padding .5em
+    border-radius .5em
+    border-style solid
+    border-color $primary
+
+fieldset.error
+    input[type="text"].error
+        border-color $error
+
+    label
+        color $error
+
+.confirm-create
+    opacity 0.0
+    display none
+    transition-property opacity
+    trnsaition-duration 1s
+
+    .show
+        display block
+        opacity 1.0

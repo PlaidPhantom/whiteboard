@@ -1,24 +1,29 @@
-% rebase('_base', title='Home')
+% def scripts():
+    % # recommended by Bliss
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=all"></script>
+    <script src="/js/index"></script>
+% end
+
+% rebase('_base', title='Home', scripts=scripts)
 
 <header>
     <h1>Whiteboard</h1>
     <p>Collaborative brainstorming made easy.</p>
 </header>
 
-<main>
-    <form action="/board/new" method="post">
-        <label for="new-wb-id">Whiteboard ID:</label>
-        <input type="text" id="new-wb-id" name="newid" />
-        <br />
-        <label for="new-pass">Passphrase:</label>
-        <input type="text" id="new-pass" name="passphrase" />
-        <br />
-        <button type="submit">Create a new Whiteboard</button>
+<main id="main">
+    <form data-bind="submit: FindWhiteboard">
+        <fieldset data-bind="css: idValid() ? 'valid' : 'error'">
+            <label for="wb-id">Whiteboard ID:</label>
+            <input type="text" id="wb-id" name="wb-id" placeholder="Whiteboard ID" data-bind="textInput: id" />
+            <p><small>Only letters (A-Z, a-z), numbers (0-9), dashes (-), and underscores (_) allowed.</small></p>
+        </fieldset>
+        <button type="submit" data-bind="disable: !idValid() || searching()">Open Whiteboard</button>
     </form>
 
-    <form action="/board/join" method="post">
-        <label for="wb-id">Whiteboard ID:</label>
-        <input type="text" id="wb-id" name="id" />
-        <button type="submit">Join a Whiteboard</button>
+    <form data-bind="if: confirmCreate" class="confirm-create">
+        <p>That whiteboard currently doesn't exist.  Do you want to create it?</p>
+        <button data-bind="click: CreateBoard">Create</button>
     </form>
+
 </main>
