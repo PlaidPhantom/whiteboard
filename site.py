@@ -13,6 +13,10 @@ def css():
 def fonts(fontfile):
     return static_file(fontfile, "css/sensasans/")
 
+@get('/js/bliss')
+def bliss():
+    return static_file('bliss.js', 'js/libs/')
+
 @get('/js/<script:re:[A-Za-z]+>')
 def js(script):
     return static_file(script + '.min.js', 'js/')

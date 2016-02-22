@@ -1,5 +1,5 @@
-import { ko } from 'libs/knockout-3.4.0.js';
-import { $, $$ } from 'libs/bliss.js';
+//import * from './libs/knockout-3.4.0.js';
+//import * from './libs/bliss.js';
 
 var model = {
     id: ko.observable(''),
