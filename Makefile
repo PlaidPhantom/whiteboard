@@ -69,7 +69,7 @@ stop:
 	kill $$(cat web-socket.pid) && rm web-socket.pid
 	kill $$(cat proxy.pid) && rm proxy.pid
 
-build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js
+build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js $(JS_DIR)/index.min.js
 	@echo 'build done'
 
 %.css: %.styl
