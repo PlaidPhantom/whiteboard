@@ -1,8 +1,6 @@
 % def scripts():
     % # recommended by Bliss
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=all"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-    <script src="/js/bliss"></script>
     <script src="/js/index"></script>
 % end
 

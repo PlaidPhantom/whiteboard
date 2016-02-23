@@ -75,8 +75,11 @@ build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js $(JS_DIR)/index.min
 %.css: %.styl
 	$$(npm bin)/stylus --resolve-url --include-css --compress --out $@ $?
 
-%.min.js: %.js
+%.min.js: %.bundle.js
 	$$(npm bin)/uglifyjs -o $@ $?
+
+%.bundle.js: %.js
+	./bundle.sh $@
 
 %.js: %.es
 	$$(npm bin)/babel -o $@ $?
