@@ -1,6 +1,6 @@
 from sys import argv
 
-from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect, HTTPResponse
+from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect, abort, HTTPResponse
 from gz_middleware import GzMiddleware
 
 from data_access import *
@@ -17,9 +17,11 @@ def fonts(fontfile):
 def bliss():
     return static_file('bliss.js', 'js/libs/')
 
+jsext = '.bundle.js' if '--debug' in argv else '.min.js'
+
 @get('/js/<script:re:[A-Za-z]+>')
 def js(script):
-    return static_file(script + '.min.js', 'js/')
+    return static_file(script + jsext, 'js/')
 
 @get('/')
 @view('index')
@@ -28,9 +30,9 @@ def index():
 
 @get('/exists')
 def exists():
-    id = request.forms.id
+    id = request.query.id
 
-    if id == ''
+    if id == '':
         abort(400)
     elif not Board.exists(id):
         abort(404)

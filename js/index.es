@@ -9,7 +9,7 @@ var model = {
 
     FindWhiteboard: function() {
         if(!model.idValid())
-            return;
+            return false;
 
         var id = model.id();
 
@@ -24,6 +24,8 @@ var model = {
             else
                 alert("There was an issue connecting to the server.");
         });
+
+        return false;
     },
 
     confirmCreate: ko.observable(false),
@@ -37,6 +39,7 @@ model.id.subscribe(function() {
     model.confirmCreate(false);
 });
 
-$.ready(function() {
-    ko.applyBindings(model, document.getElementById('main'));
+$.ready().then(function() {
+    console.log('applying bindings')
+    ko.applyBindings(model, $('#main'));
 });

@@ -1,8 +1,9 @@
+from contextlib import contextmanager
 import redis
 
-__boardSetKey = '_all_boards'
-__passphraseKeyFormat = '{}::passphrase'
-__layersKeyFormat = '{}::layers'
+_boardSetKey = '_all_boards'
+_passphraseKeyFormat = '{}::passphrase'
+_layersKeyFormat = '{}::layers'
 
 @contextmanager
 def connect():
@@ -15,7 +16,7 @@ def connect():
 class Board():
     def exists(id):
         with connect() as r:
-            return r.sismember(__boardSetKey, id)
+            return r.sismember(_boardSetKey, id)
 
     def __init__(self, id):
         self.id = id
@@ -24,10 +25,10 @@ class Board():
             r.sadd(__boardSetKey, id)
 
     def __passphraseKey(self):
-        return __passphraseKeyFormat.format(self.id)
+        return _passphraseKeyFormat.format(self.id)
 
     def __layersKey(self):
-        return __layersKeyFormat.format(self.id)
+        return _layersKeyFormat.format(self.id)
 
     def has_passphrase(self):
         with connect() as r:

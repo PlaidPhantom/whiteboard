@@ -13,7 +13,7 @@ PYTHON = python3
 endif
 
 
-.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug kill build
+.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug kill build build-debug
 
 all: build
 
@@ -57,7 +57,7 @@ run: build
 	./web-socket.sh & echo $$! > web-socket.pid
 	./proxy.sh & echo $$! > proxy.pid
 
-debug: build
+debug: build-debug
 	./redis.sh --loglevel verbose & echo $$! > redis.pid
 	./site.sh --debug & echo $$! > site.pid
 	./web-socket.sh --debug & echo $$! > web-socket.pid
@@ -70,6 +70,9 @@ stop:
 	kill $$(cat proxy.pid) && rm proxy.pid
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js $(JS_DIR)/index.min.js
+	@echo 'build done'
+
+build-debug: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.bundle.js $(JS_DIR)/index.bundle.js
 	@echo 'build done'
 
 %.css: %.styl
