@@ -53,7 +53,7 @@ def create():
 
 @get('/board/<id>')
 def board(id):
-    return {}
+    return { board = Board(id) }
 
 @post('/board/<id>/passphrase')
 def passphrase(id):
