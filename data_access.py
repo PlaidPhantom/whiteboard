@@ -20,7 +20,7 @@ class Board():
 
     def create(id):
         with connect() as r:
-            r.sadd(__boardSetKey, id)
+            r.sadd(_boardSetKey, id)
 
         return Board(id)
 

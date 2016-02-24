@@ -52,7 +52,7 @@ def create():
     redirect('/board/' + id)
 
 @get('/board/<id>')
-def board():
+def board(id):
     return {}
 
 @post('/board/<id>/passphrase')
