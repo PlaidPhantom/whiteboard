@@ -18,11 +18,14 @@ class Board():
         with connect() as r:
             return r.sismember(_boardSetKey, id)
 
-    def __init__(self, id):
-        self.id = id
-
+    def create(id):
         with connect() as r:
             r.sadd(__boardSetKey, id)
+
+        return Board(id)
+
+    def __init__(self, id):
+        self.id = id
 
     def __passphraseKey(self):
         return _passphraseKeyFormat.format(self.id)

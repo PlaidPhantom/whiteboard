@@ -1,3 +1,4 @@
+from re import match
 from sys import argv
 
 from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect, abort, HTTPResponse
@@ -40,9 +41,14 @@ def exists():
         return HTTPResponse(200)
 
 
-@post('/board/create/<id:re:^[A-Za-z0-9_-]+$>')
-def create(id):
-    board = Board(id)
+@post('/board/create')
+def create():
+    id = request.forms.id
+
+    if id is None or id == "" or match('^[A-Za-z0-9_-]+$', id) is None:
+        abort(400)
+
+    Board.create(id)
     redirect('/board/' + id)
 
 @get('/board/<id>')

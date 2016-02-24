@@ -28,11 +28,7 @@ var model = {
         return false;
     },
 
-    confirmCreate: ko.observable(false),
-
-    CreateBoard: function() {
-        location.assign('/board/create/' + model.id());
-    }
+    confirmCreate: ko.observable(false)
 };
 
 model.id.subscribe(function() {

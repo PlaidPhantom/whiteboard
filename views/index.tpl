@@ -21,9 +21,10 @@
         <button type="submit" data-bind="disable: !idValid() || searching()">Open Whiteboard</button>
     </form>
 
-    <form data-bind="css: { show: confirmCreate }" class="confirm-create">
+    <form data-bind="css: { show: confirmCreate }" class="confirm-create" method="post" action="/board/create">
+        <input type="hidden" name="id" data-bind="value: id" />
         <p>That whiteboard currently doesn't exist.  Do you want to create it?</p>
-        <button data-bind="click: CreateBoard">Create</button>
+        <button type="submit">Create</button>
     </form>
 
 </main>
