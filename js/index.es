@@ -3,7 +3,7 @@
 
 var model = {
     id: ko.observable(''),
-    idValid: ko.pureComputed(() => /^[A-Za-z0-9_\-]+$/.test(model.id())),
+    idValid: ko.pureComputed(() => (/^[A-Za-z0-9_\-]+$/).test(model.id())),
 
     searching: ko.observable(false),
 

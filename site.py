@@ -38,7 +38,7 @@ def exists():
     elif not Board.exists(id):
         abort(404)
     else:
-        return HTTPResponse(200)
+        return HTTPResponse(status=200)
 
 
 @post('/board/create')
@@ -52,8 +52,9 @@ def create():
     redirect('/board/' + id)
 
 @get('/board/<id>')
+@view('board')
 def board(id):
-    return { board = Board(id) }
+    return { "board": Board(id) }
 
 @post('/board/<id>/passphrase')
 def passphrase(id):

@@ -13,7 +13,7 @@ PYTHON = python3
 endif
 
 
-.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean test run debug kill build build-debug
+.PHONY: pip-install pip-uninstall configure-dev configure upgrade clean clean-env test run debug kill build build-debug
 
 all: build
 
@@ -40,12 +40,16 @@ upgrade:
 	source $(VENV_ACTIVATE) && pip install --upgrade -r requirements.txt && pip freeze > requirements.txt && deactivate
 
 clean:
-	rm -Rf node_modules/
-	rm -Rf __pycache__/
-	rm -Rf $(VENV_NAME)/
 	rm -f $(CSS_DIR)/*.css
 	rm -f $(JS_DIR)/*.min.js
 	rm -f $(JS_DIR)/*.js
+	rm -f $(JS_DIR)/*.bundle.js
+
+clean-env:
+	rm -Rf node_modules/
+	rm -Rf __pycache__/
+	rm -Rf $(VENV_NAME)/
+
 
 test:
 	source $(VENV_ACTIVATE) && $(PYTHON) tests.py && deactivate
@@ -64,10 +68,7 @@ debug: build-debug
 	./proxy.sh & echo $$! > proxy.pid
 
 stop:
-	kill $$(cat redis.pid) && rm redis.pid
-	kill $$(cat site.pid) && rm site.pid
-	kill $$(cat web-socket.pid) && rm web-socket.pid
-	kill $$(cat proxy.pid) && rm proxy.pid
+	kill $$(cat *.pid) && rm *.pid
 
 build: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.min.js $(JS_DIR)/index.min.js
 	@echo 'build done'
