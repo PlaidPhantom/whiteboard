@@ -5,7 +5,7 @@ from websockets import serve
 
 from data_access import Board
 
-class ClientConnection():
+class SocketServer():
     def __init__(self, connection, boardId):
         self.connection = connection
         self.board = Board(boardId)
@@ -47,7 +47,7 @@ async def openConnection(connection, path):
     if match('^[A-Za-z0-9_-]+$', boardId) is None:
         return
     else:
-        connection = ClientConnection(connection, boardId)
+        connection = SocketServer(connection, boardId)
         await connection.run()
 
 server = serve(openConnection, port=8082)
