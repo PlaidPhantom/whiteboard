@@ -13,7 +13,7 @@ class ClientConnection():
         self.receiver = self.board.getChannelReceiver()
 
     async def run(self):
-        # TODO passphrase convo. + sdf
+        # TODO passphrase convo
         await self.connection.send(json.dumps(self.board.getCurState()))
         await self.connection.send(json.dumps(self.board.startNewPath()))
         await wait(listen, watch)
@@ -45,7 +45,7 @@ async def openConnection(connection, path):
     boardId = path[len('/socket/'):]
 
     if match('^[A-Za-z0-9_-]+$', boardId) is None:
-        return;
+        return
     else:
         connection = ClientConnection(connection, boardId)
         await connection.run()
