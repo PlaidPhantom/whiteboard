@@ -3,10 +3,11 @@ from uuid import uuid4
 
 import redis
 
-_boardSetKey = '_all_boards'
-_passphraseKeyFormat = '{}::passphrase'
-_layersKeyFormat = '{}::layers'
-_channelNameFormat = '{}::channel'
+_boardSetKey = '_all_boards' # set of all board ids
+_passphraseKeyFormat = '{}::passphrase' # board passphrase as string. format board id
+_channelNameFormat = '{}::channel' # name of board pubsub channel. format board id
+_layerListKeyFormat = '{}::layers' # board's layer ids as list. format board id
+_layerKeyFormat = '{}::{}' # layer's string value format board id & layer id
 
 def connectRedis():
     return redis.StrictRedis(host='localhost', port=6379)
@@ -36,11 +37,14 @@ class Board():
     def __passphraseKey(self):
         return _passphraseKeyFormat.format(self.id)
 
-    def __layersKey(self):
-        return _layersKeyFormat.format(self.id)
+        def __channelKey(self):
+            return _channelNameFormat.format(self.id)
 
-    def __channelKey(self):
-        return _channelNameFormat.format(self.id)
+    def __layerListKey(self):
+        return _layerListKeyFormat.format(self.id)
+
+    def __layerKey(self, layerId):
+        return _layerKeyFormat.format(self.id, layerId)
 
     def has_passphrase(self):
         with connect() as r:
@@ -62,23 +66,36 @@ class Board():
 
     def handleMessage(self, message):
         if msg.type == "add-path":
-            self.broadcastToChannel(msg)
-            # TODO add to redis path DB
+            self.appendToPath(msg)
             return None
         elif msg.type == "fin-path":
-            return newPathMessage()
+            return self.startNewPath()
 
     def startNewPath(self):
-        return { "type": "path-id", "id": self.newPathId() }
+        id = str(uuid4())
+
+        with connect() as r:
+            r.rpush(self.__layerListKey(), id)
+            r.set(self.__layerKey(id), "")
+
+        return { "type": "path-id", "id": id }
+
+    def appendToPath(self, msg):
+        with connect() as r:
+            r.append(self.__layerKey(msg.id), msg.data)
+        self.broadcastToChannel(msg)
 
     def broadcastToChannel(self, message):
         with connect() as r:
             r.publish(self.__channelKey(), message)
 
+    def getCurState(self):
+        paths = {}
 
-    def newPathId(self):
-        self.pathId = str(uuid4())
-        return self.pathId
+        with connect() as r:
+            pathIds = r.lrange(self.__layerListKey(), 0, -1)
 
-    def getAllPaths():
-        pass
+            for id in pathIds:
+                paths[id] = r.get(self.__layerKey(id))
+
+        return { "type": "cur-state", "paths": paths }
