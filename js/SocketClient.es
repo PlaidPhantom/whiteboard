@@ -5,10 +5,9 @@ class SocketClient {
         this.connection.onopen(this.connect);
     }
 
-    function connect() {
+    function setMessageHandler(handler) {
         this.connection.onmessage = function(event) {
-            if(this.messageReceiver)
-                this.messageReceiver(JSON.parse(event.data));
+            handler(JSON.parse(event.data));
         };
     }
 

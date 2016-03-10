@@ -18,8 +18,8 @@ they are distinguished by a `type` attribute.
 3. `cur-state`
     * provides the client with the initial state of the board. Will be the initial
     communication from the server on connect, unless the board is passphrase-protected.
-    * Example: `{ "type": "cur-state", "paths": { "<path 1 id>": <path object> } [...] }`
-    * Path Object: `{ "data": "M1,1L20,10<...>", "style": "<style information>" }`
+    * Example: `{ "type": "cur-state", "paths": [ <path object>[, ...] ] }`
+    * Path Object: `{ "id": "<id>" "data": "M1,1L20,10<...>", "style": "<style information>" }`
     * Style Information: `?????` _NOTE: Style Information is not currently provided._
 4. `path-id`
     * `path-id` from the server provides the client with the ID of a path that can be drawn on.
