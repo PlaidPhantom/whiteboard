@@ -5,17 +5,17 @@ class SocketClient {
         this.connection.onopen(this.connect);
     }
 
-    function setMessageHandler(handler) {
+    setMessageHandler(handler) {
         this.connection.onmessage = function(event) {
             handler(JSON.parse(event.data));
         };
     }
 
-    function sendMessage(msg) {
+    sendMessage(msg) {
         this.connection.send(JSON.stringify(msg));
     }
 
-    function attachMessageReceiver(handler) {
+    attachMessageReceiver(handler) {
         this.messageReceiver = handler;
     }
 }

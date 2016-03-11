@@ -82,8 +82,11 @@ build-debug: $(CSS_DIR)/whiteboard.css $(JS_DIR)/whiteboard.bundle.js $(JS_DIR)/
 %.min.js: %.bundle.js
 	$$(npm bin)/uglifyjs -o $@ $?
 
-%.bundle.js: %.js
-	./bundle.sh $@
+$(JS_DIR)/whiteboard.bundle.js: $(JS_DIR)/libs/bliss.js $(JS_DIR)/SocketClient.js $(JS_DIR)/whiteboard.js
+	./bundle.sh $@ $+
+
+$(JS_DIR)/index.bundle.js: $(JS_DIR)/libs/knockout-3.4.0.js $(JS_DIR)/libs/bliss.js $(JS_DIR)/index.js
+	./bundle.sh $@ $+
 
 %.js: %.es
 	$$(npm bin)/babel -o $@ $?
