@@ -1,5 +1,6 @@
 from asyncio import get_event_loop, wait, sleep
 import json
+from re import match
 
 from websockets import serve
 
@@ -16,7 +17,7 @@ class SocketServer():
         # TODO passphrase convo
         await self.connection.send(json.dumps(self.board.getCurState()))
         await self.connection.send(json.dumps(self.board.startNewPath()))
-        await wait(listen, watch)
+        await wait([self.listen, self.watch])
 
     async def startNewPath(self):
         await self.connection.send(json.dumps(self.board.startNewPath()))

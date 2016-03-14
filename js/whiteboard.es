@@ -5,7 +5,7 @@
     const waiting = Symbol('waiting');
 
     const drawingState = {
-        server: new SocketClient(),
+        server: null,
         board: $('#board'),
         state: idle, // 'idle', 'drawing'
         timeout: null,
@@ -16,6 +16,7 @@
             console.log(data);
             this.pathString += data;
             this.curPath.setAttribute('d', this.pathString);
+            this.send(data);
         },
         newPath: function(id) {
             console.log('new path id: ' + id);
@@ -38,8 +39,31 @@
             this.state = drawing;
             clearTimeout(this.timeout);
             this.timeout = null;
+        },
+
+        sendBuffer: '',
+        sendTimeout: null,
+        send: function(data) {
+            if(this.sendTimeout)
+                clearTimeout(this.sendTimeout);
+
+            this.sendBuffer += data;
+
+            this.sendTimeout = setTimeout(() => {
+                var data = this.sendBuffer;
+                this.sendBuffer = '';
+                this.sendTimeout = null;
+
+                this.server.sendMessage({
+                    type: 'add-path',
+                    id: this.pathId,
+                    data: data
+                })
+            }, 500);
         }
     };
+
+    drawingState.server = new SocketClient(drawingState.board.getAttribute('data-boardid'))
 
     drawingState.server.setMessageHandler(function(message) {
         switch(message.type) {

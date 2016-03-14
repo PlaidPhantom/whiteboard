@@ -37,8 +37,8 @@ class Board():
     def __passphraseKey(self):
         return _passphraseKeyFormat.format(self.id)
 
-        def __channelKey(self):
-            return _channelNameFormat.format(self.id)
+    def __channelKey(self):
+        return _channelNameFormat.format(self.id)
 
     def __layerListKey(self):
         return _layerListKeyFormat.format(self.id)
