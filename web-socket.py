@@ -17,7 +17,7 @@ class SocketServer():
         # TODO passphrase convo
         await self.connection.send(json.dumps(self.board.getCurState()))
         await self.connection.send(json.dumps(self.board.startNewPath()))
-        await wait([self.listen, self.watch])
+        await wait([self.listen(), self.watch()])
 
     async def startNewPath(self):
         await self.connection.send(json.dumps(self.board.startNewPath()))
@@ -38,7 +38,7 @@ class SocketServer():
 
             if msg is None:
                 await sleep(1)
-            if msg.id != self.board.pathId:
+            elif json.loads(msg)["id"] != self.board.pathId:
                 await self.connection.send(msg)
 
 

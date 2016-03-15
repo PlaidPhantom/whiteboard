@@ -65,10 +65,10 @@ class Board():
             return receiver;
 
     def handleMessage(self, message):
-        if msg.type == "add-path":
-            self.appendToPath(msg)
+        if message.type == "add-path":
+            self.appendToPath(message)
             return None
-        elif msg.type == "fin-path":
+        elif message.type == "fin-path":
             return self.startNewPath()
 
     def startNewPath(self):
@@ -96,6 +96,6 @@ class Board():
             pathIds = r.lrange(self.__layerListKey(), 0, -1)
 
             for id in pathIds:
-                paths.append({ "id": id, "d": r.get(self.__layerKey(id)) })
+                paths.append({ "id": str(id), "d": r.get(self.__layerKey(id)) })
 
         return { "type": "cur-state", "paths": paths }

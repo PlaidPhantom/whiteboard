@@ -80,7 +80,7 @@
                 }
                 break;
             case 'path-id':
-                drawingState.newPath('', message.id);
+                drawingState.newPath(message.id);
                 break;
             case 'add-path':
                 if(message.id != drawingState.pathId) {
