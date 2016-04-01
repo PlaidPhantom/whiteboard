@@ -1,7 +1,11 @@
-var SimpleReverseProxy = require('simple-reverse-proxy'),
-    SimplePathRouter = require('simple-path-router');
+httpProxy = require('http-proxy');
 
-new SimplePathRouter()
-    .when('/', new SimpleReverseProxy(['http://localhost:8081']))
-    .when('/socket', new SimpleReverseProxy(['http://localhost:8082']))
-    .listen(8080);
+var options = {
+    pathnameOnly: true,
+    router: {
+        '/': '127.0.0.1:8081',
+        '/socket': '127.0.0.1:8082'
+    }
+};
+
+httpProxy.createServer(options).listen(8080);

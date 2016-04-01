@@ -1,7 +1,7 @@
 class SocketClient {
     constructor(boardId) {
         this.boardId = boardId;
-        this.connection = new WebSocket("ws://localhost:8082/socket/" + boardId);
+        this.connection = new WebSocket("ws://localhost:8080/socket/" + boardId);
         this.connection.onopen = this.connect;
     }
 
