@@ -1,11 +1,15 @@
-httpProxy = require('http-proxy');
+var http = require('http')
+var httpProxy = require('http-proxy');
 
-var options = {
-    pathnameOnly: true,
-    router: {
-        '/': '127.0.0.1:8081',
-        '/socket': '127.0.0.1:8082'
-    }
-};
+var wsProxy = httpProxy.createProxyServer({ ws: true, target: 'ws://localhost:8082/' });
+var httpProxy = httpProxy.createProxyServer({ target: 'http://localhost:8081/' });
 
-httpProxy.createServer(options).listen(8080);
+var server = http.createServer(function(req, res) {
+  httpProxy.web(req, res);
+});
+
+server.on('upgrade', function (req, socket, head) {
+  wsProxy.ws(req, socket, head);
+});
+
+server.listen(8080);

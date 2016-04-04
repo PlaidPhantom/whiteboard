@@ -93,9 +93,9 @@ class Board():
         paths = []
 
         with connect() as r:
-            pathIds = r.lrange(self.__layerListKey(), 0, -1)
+            pathIds = [ id.decode('utf8') for id in r.lrange(self.__layerListKey(), 0, -1) ]
 
             for id in pathIds:
-                paths.append({ "id": id, "d": r.get(self.__layerKey(id)) })
+                paths.append({ "id": id, "d": r.get(self.__layerKey(id)).decode('utf8') })
 
         return { "type": "cur-state", "paths": paths }
