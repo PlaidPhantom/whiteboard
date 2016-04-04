@@ -65,10 +65,11 @@ class Board():
             return receiver;
 
     def handleMessage(self, message):
-        if message.type == "add-path":
+        print("BOARD: handling message type ", message["type"])
+        if message["type"] == "add-path":
             self.appendToPath(message)
             return None
-        elif message.type == "fin-path":
+        elif message["type"] == "fin-path":
             return self.startNewPath()
 
     def startNewPath(self):
@@ -82,7 +83,7 @@ class Board():
 
     def appendToPath(self, msg):
         with connect() as r:
-            r.append(self.__layerKey(msg.id), msg.data)
+            r.append(self.__layerKey(msg["id"]), msg["data"])
         self.broadcastToChannel(msg)
 
     def broadcastToChannel(self, message):
