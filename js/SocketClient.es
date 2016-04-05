@@ -19,7 +19,7 @@ class SocketClient {
     sendMessage(message) {
         var msg = JSON.stringify(message);
         console.log('Sending: ' + msg);
-        this.connection.send(JSON.stringify(msg));
+        this.connection.send(msg);
     }
 
     attachMessageReceiver(handler) {

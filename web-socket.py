@@ -16,10 +16,10 @@ class SocketServer():
     async def run(self):
         # TODO passphrase convo
         msg = json.dumps(self.board.getCurState())
-        print('SOCKET: sent message', msg)
+        print('SOCKET: sent state', msg)
         await self.connection.send(msg)
         msg = json.dumps(self.board.startNewPath())
-        print('SOCKET: sent message', msg)
+        print('SOCKET: sent path id', msg)
         await self.connection.send(msg)
         await wait([self.listen(), self.watch()])
 
@@ -29,13 +29,13 @@ class SocketServer():
     async def listen(self):
         while True:
             s = await self.connection.recv()
-            print('SOCKET: got message', s)
+            print('SOCKET: client sent', s)
             msg = json.loads(s)
             response = self.board.handleMessage(msg)
 
             if response is not None:
                 r = json.dumps(response)
-                print('SOCKET: sent message', r)
+                print('SOCKET: sent response', r)
                 await self.connection.send();
 
 
@@ -45,9 +45,14 @@ class SocketServer():
 
             if msg is None:
                 await sleep(1)
-            elif json.loads(msg)["id"] != self.board.pathId:
-                print('SOCKET: sent message', msg)
-                await self.connection.send(msg)
+            elif msg["type"] != "message":
+                pass
+            else:
+                data = msg['data'].decode('utf8')
+                print('SOCKET: received message', data)
+
+                if json.loads(data)["id"] != self.board.pathId:
+                    await self.connection.send(data)
 
 
 async def openConnection(connection, path):

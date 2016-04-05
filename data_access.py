@@ -84,11 +84,8 @@ class Board():
     def appendToPath(self, msg):
         with connect() as r:
             r.append(self.__layerKey(msg["id"]), msg["data"])
-        self.broadcastToChannel(msg)
 
-    def broadcastToChannel(self, message):
-        with connect() as r:
-            r.publish(self.__channelKey(), message)
+            r.publish(self.__channelKey(), json.dumps(msg).encode('utf8'))
 
     def getCurState(self):
         paths = []
@@ -97,6 +94,6 @@ class Board():
             pathIds = [ id.decode('utf8') for id in r.lrange(self.__layerListKey(), 0, -1) ]
 
             for id in pathIds:
-                paths.append({ "id": id, "d": r.get(self.__layerKey(id)).decode('utf8') })
+                paths.append({ "id": id, "data": r.get(self.__layerKey(id)).decode('utf8') })
 
         return { "type": "cur-state", "paths": paths }
