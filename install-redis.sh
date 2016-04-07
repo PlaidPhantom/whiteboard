@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if make --version | grep "^GNU Make" >& /dev/null
+then
+  MAKE=make
+else
+  MAKE=gmake
+fi
+
 mkdir -p redis
 cd redis
 
@@ -16,5 +23,5 @@ else
     tar xzf redis-stable.tar.gz
     mv redis-stable/* redist-stable/.* .
     rmdir redis-stable
-    gmake
+    ${MAKE}
 fi
