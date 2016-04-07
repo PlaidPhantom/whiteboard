@@ -16,5 +16,5 @@ else
     tar xzf redis-stable.tar.gz
     mv redis-stable/* redist-stable/.* .
     rmdir redis-stable
-    make
+    gmake
 fi
