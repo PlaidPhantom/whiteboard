@@ -31,7 +31,7 @@ configure-dev: configure
 
 configure:
 	npm install --production
-	virtualenv -v -p 3 $(VENV_NAME)
+	virtualenv -v -p $(PYTHON) $(VENV_NAME)
 	source $(VENV_ACTIVATE) && pip install -r requirements.txt && deactivate
 	./install-redis.sh
 
