@@ -11,6 +11,7 @@
         timeout: null,
         curPath: null,
         pathString: '',
+        prevPathIds: [],
         pathId: null,
         append: function(data) {
             console.log(data);
@@ -21,6 +22,7 @@
         newPath: function(id) {
             console.log('new path id: ' + id);
             this.pathString = '';
+            this.prevPathIds.push(this.pathId);
             this.pathId = id;
             this.curPath = document.createElementNS("http://www.w3.org/2000/svg", 'path');
             this.curPath.setAttribute('id', id);
@@ -83,9 +85,16 @@
                 drawingState.newPath(message.id);
                 break;
             case 'add-path':
-                if(message.id != drawingState.pathId) {
-                    path = board.find('#' + message.id);
-                    path.d += message.data;
+                if(message.id != drawingState.pathId && !drawingState.prevPathIds.some(p => p === message.id)) {
+                    path = drawingState.board.getElementById(message.id);
+                    if(path)
+                        path.d += message.data;
+                    else {
+                        var element = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+                        element.setAttribute("id", message.id);
+                        element.setAttribute('d', message.data);
+                        drawingState.board.appendChild(element);
+                    }
                 }
                 break;
             default:

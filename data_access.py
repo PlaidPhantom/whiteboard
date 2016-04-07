@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from uuid import uuid4
 
+import json
 import redis
 
 _boardSetKey = '_all_boards' # set of all board ids
@@ -58,14 +59,10 @@ class Board():
         with connect() as r:
             r.set(self.__passphraseKey(), passphrase)
 
-    def getChannelReceiver(self):
-        with connect() as r:
-            receiver = r.pubsub(ignore_subscribe_messages=True)
-            receiver.subscribe(self.__channelKey())
-            return receiver;
+    def getChannelKey(self):
+        return self.__channelKey()
 
     def handleMessage(self, message):
-        print("BOARD: handling message type ", message["type"])
         if message["type"] == "add-path":
             self.appendToPath(message)
             return None
