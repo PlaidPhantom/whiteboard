@@ -2,7 +2,6 @@ from re import match
 from sys import argv
 
 from bottle import run, get, post, error, static_file, request, response, view, default_app, redirect, abort, HTTPResponse
-from gz_middleware import GzMiddleware
 
 from data_access import *
 
@@ -61,4 +60,4 @@ def passphrase(id):
     given_pass = request.forms.passphrase
     # TODO return whether passphrase is valid, return 200 or 403
 
-run(app=GzMiddleware(default_app()), host='0.0.0.0', port=8081, server='waitress', reloader='--debug' in argv, debug='--debug' in argv)
+run(app=default_app(), host='0.0.0.0', port=8081, server='waitress', reloader='--debug' in argv, debug='--debug' in argv)
